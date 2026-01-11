@@ -1,4 +1,5 @@
 🎅 67 on a Merry RizzMas (Secret Santa Script)
+
 This Python script automates the Secret Santa gift exchange process. It shuffles participants, creates a circular gift-giving chain, and sends personalized emails using a customizable SMTP configuration.
 
 ✨ Features
