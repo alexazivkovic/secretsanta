@@ -4,6 +4,7 @@ from email.message import EmailMessage
 import os
 from dotenv import load_dotenv
 import json
+import time
 
 with open("players.json", "r") as f:
     players = json.load(f)
@@ -20,6 +21,8 @@ for i in range(len(names)):
 load_dotenv()
 EMAIL = os.getenv("EMAIL")
 PASSWORD = os.getenv("PASSWORD")
+SMTP_SERVER = os.getenv("SMTP_SERVER")
+SMTP_PORT = int(os.getenv("SMTP_PORT"))
 
 def send_email(receiver_email, receiver_name, target_name):
     msg = EmailMessage()
@@ -29,18 +32,20 @@ def send_email(receiver_email, receiver_name, target_name):
     msg['To'] = receiver_email
 
     try:
-        with smtplib.SMTP('smtp.office365.com', 587) as smtp:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as smtp:
             smtp.ehlo()
             smtp.starttls()
             smtp.ehlo()
             smtp.login(EMAIL, PASSWORD)
             smtp.send_message(msg)
+            print(f"✅ Sent to {receiver_name}")
 
     except Exception as e:
-        print(f"Greška: {e}")
+        print(f"❌ Error for {receiver_name}: {e}")
 
 for giver, email, receiver in pairs:
-    print(f"Šaljem mejl za {giver}...")
+    print(f"Sending email for {giver}...")
     send_email(email, giver, receiver)
+    time.sleep(1)
 
-print("Gotovo!")
+print("Done!")
